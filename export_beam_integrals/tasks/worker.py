@@ -10,6 +10,7 @@ def compute_integral(integral_id, beam_type_id, m, t, v, n):
     integral = BaseIntegral.coerce(integral_id)
     max_mode = app.conf.BEAM_INTEGRALS_MAX_MODE
     decimal_precision = app.conf.BEAM_INTEGRALS_DECIMAL_PRECISION
+    normalize_integrals_smaller_than = app.conf.BEAM_INTEGRALS_NORMALIZE_INTEGRALS_SMALLER_THAN
 
     result, error = integrate(
         integral, beam_type,
@@ -18,6 +19,10 @@ def compute_integral(integral_id, beam_type_id, m, t, v, n):
         decimal_precision=decimal_precision,
         error=True
     )
+
+    # Normalize the `result` to zero for small values, as per the section 3.4 of my PhD thesis
+    if abs(result) <= normalize_integrals_smaller_than:
+        result = 0.
 
     cache_key = integral.cache_key(m, t, v, n, max_mode=max_mode)
     data = {
