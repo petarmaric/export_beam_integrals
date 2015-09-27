@@ -5,6 +5,7 @@ import beam_integrals as bi
 from beam_integrals.beam_types import BaseBeamType
 from beam_integrals.integrals import BaseIntegral
 from celery import chain, chord
+import numpy as np
 import tables as tb
 
 import export_beam_integrals as ebi
@@ -150,8 +151,8 @@ def store_computed_integral_tables(integral_tables, beam_type_id):
                 expectedrows=num_rows
             )
 
-            # Add the root group metadata, as per the section 3.2 of my PhD thesis
-            table.attrs.used_variables_list = integral.used_variables
+            # Add the integral table metadata, as per the section 3.2 of my PhD thesis
+            table.attrs.used_variables_list = np.array(integral.used_variables, dtype=str)
             table.attrs.used_variables_num = len(integral.used_variables)
 
             # OPTIMIZATION: Rationalize the number of integration variables, as per the section 3.3.3 of my PhD thesis
