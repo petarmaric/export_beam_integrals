@@ -5,6 +5,7 @@ import beam_integrals as bi
 from beam_integrals.beam_types import BaseBeamType
 from beam_integrals.integrals import BaseIntegral
 from celery import chain, chord
+from celery.exceptions import Reject
 import numpy as np
 import tables as tb
 
@@ -32,6 +33,9 @@ def record_experiment_status(status):
 
 @app.task
 def seed_computations(ignore_result=True):
+    if os.path.exists(get_experiment_status_filename('started')):
+        raise Reject('Computations have already been seeded!')
+
     record_experiment_status.si('started').delay()
     
     chord(
