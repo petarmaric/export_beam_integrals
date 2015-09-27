@@ -90,6 +90,8 @@ def store_computed_integral_tables(integral_tables, beam_type_id):
     beam_type = BaseBeamType.coerce(beam_type_id)
     max_mode = app.conf.BEAM_INTEGRALS_MAX_MODE
     decimal_precision = app.conf.BEAM_INTEGRALS_DECIMAL_PRECISION
+    hdf5_complib = app.conf.HDF5_COMPLIB
+    hdf5_complevel = app.conf.HDF5_COMPLEVEL
     results_dir = app.conf.RESULTS_DIR
 
     # Celery `chord` sent us a list, convert it to a `dict` for easier use
@@ -99,11 +101,11 @@ def store_computed_integral_tables(integral_tables, beam_type_id):
     #   * 'complib': Specifies the compression library to be used. Although PyTables
     #     supports many interesting compression libraries, HDF5 itself provides
     #     only 2 pre-defined filters for compression: ZLIB and SZIP. We can't
-    #     use SZIP due to licensing issues, therefore ZLIB has been chosen as
+    #     use SZIP due to licensing issues, therefore ZLIB has been chosen by default as
     #     it's supported by all major HDF5 viewers (HDFView, HDF Compass, ViTables,
     #     HDF Explorer).
     #   * 'complevel': Specifies a compression level for data. Using the lowest
-    #     level (1), per PyTables optimization recommendations (see references).
+    #     level (1) by default, per PyTables optimization recommendations (see references).
     #   * 'shuffle': Enable the Shuffle filter to improve the compression ratio.
     #   * 'fletcher32': Enable the Fletcher32 filter to add a checksum on each
     #     data chunk.
@@ -115,7 +117,7 @@ def store_computed_integral_tables(integral_tables, beam_type_id):
     #   * http://www.pytables.org/usersguide/libref/helper_classes.html#the-filters-class
     #   * http://www.pytables.org/usersguide/optimization.html#compression-issues
     #   * http://www.pytables.org/usersguide/optimization.html#shuffling-or-how-to-make-the-compression-process-more-effective
-    filters = tb.Filters(complib='zlib', complevel=1, shuffle=True, fletcher32=True)
+    filters = tb.Filters(complib=hdf5_complib, complevel=hdf5_complevel, shuffle=True, fletcher32=True)
 
     output_filename = os.path.join(results_dir, "%s.hdf5" % beam_type.filename)
     with tb.open_file(output_filename, 'w', filters=filters) as out:
