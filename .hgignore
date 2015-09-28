@@ -1,3 +1,4 @@
 syntax: glob
 .vagrant/
 *.pyc
+_developer_experiments/
