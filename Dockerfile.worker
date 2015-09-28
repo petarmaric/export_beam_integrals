@@ -45,5 +45,6 @@ RUN chmod +x /${DOCKER_CONFIG_SCRIPT}
 
 # Starter script
 COPY docker/docker-entrypoint.sh /
+RUN chmod +x /docker-entrypoint.sh
 ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["supervisord", "-n", "-c", "/etc/supervisor/supervisord.conf"]
