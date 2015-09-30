@@ -145,6 +145,14 @@ def store_computed_integral_tables(integral_tables, beam_type_id):
                     name=integral.name,
                     target='/' + parent.name
                 )
+
+                # Create a hard link to the parent's index as well
+                out.create_hard_link(
+                    where='/',
+                    name='_i_' + integral.name,
+                    target='/_i_' + parent.name
+                )
+
                 continue # No further processing needed, skip to the next integral
 
             # Help PyTables determine the optimal chunk size
@@ -176,5 +184,9 @@ def store_computed_integral_tables(integral_tables, beam_type_id):
                     row[k] = v
 
                 row.append()
+
+            # Create a completely sorted index (CSI) on all `used_variables` columns
+            for var in integral.used_variables:
+                table.cols._f_col(var).create_csindex()
 
             table.close()
