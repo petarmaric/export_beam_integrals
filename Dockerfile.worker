@@ -18,7 +18,7 @@ RUN apt-get update -qq && apt-get install -qq -y \
 # Install the required Python packages
 # Celery has to be installed via pip, as Ubuntu distributes an older version which has a critical bug involving chords
 # (see http://celery.readthedocs.org/en/latest/changelog.html for details)
-RUN pip install -q beam_integrals "celery[librabbitmq,redis]>=3.1.18"
+RUN pip install -q beam_integrals>=1.1.0 "celery[librabbitmq,redis]>=3.1.18"
 
 # Parameterize this Dockerfile, by storing the configuration within environment variables 
 ENV MAX_CPU_CORES 1

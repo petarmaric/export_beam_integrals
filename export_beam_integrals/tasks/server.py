@@ -83,9 +83,11 @@ def get_hdf5_table_description(used_variables, decimal_precision):
     columns['integral_float64'] = tb.Float64Col(pos=data_start_pos)
     columns['error_float64'] = tb.Float64Col(pos=data_start_pos+1)
 
+    columns['scale_factor'] = tb.Int8Col(pos=data_start_pos+2)
+    
     max_len = decimal_precision + 10 # Account for decimal dot and exponent info
-    columns['integral_str'] = tb.StringCol(itemsize=max_len, pos=data_start_pos+2)
-    columns['error_str'] = tb.StringCol(itemsize=max_len, pos=data_start_pos+3)
+    columns['integral_str'] = tb.StringCol(itemsize=max_len, pos=data_start_pos+3)
+    columns['error_str'] = tb.StringCol(itemsize=max_len, pos=data_start_pos+4)
 
     return columns
 
