@@ -45,7 +45,7 @@ def seed_computations(ignore_result=True):
 
 def export_beam_integrals(beam_type_id):
     # OPTIMIZATION: Compute only the canonical integrals, as per the section 3.3.1 of my PhD thesis
-    canonical_integrals = (integral for integral in BaseIntegral.plugins.instances if not integral.has_parent())
+    canonical_integrals = (integral for integral in BaseIntegral.plugins.instances_sorted_by_id if not integral.has_parent())
 
     return chord(
         (compute_integral_table(integral.id, beam_type_id) for integral in canonical_integrals),
