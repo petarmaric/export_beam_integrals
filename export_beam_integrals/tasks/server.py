@@ -187,6 +187,9 @@ def store_computed_integral_tables(integral_tables, beam_type_id):
 
                 row.append()
 
+            # Flush the table manually, or the last data chunk won't be filled with correct values
+            table.flush()
+
             # Create a completely sorted index (CSI) on all `used_variables` columns
             for var in integral.used_variables:
                 table.cols._f_col(var).create_csindex()
