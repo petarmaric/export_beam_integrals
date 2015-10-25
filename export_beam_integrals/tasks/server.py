@@ -1,5 +1,8 @@
 from datetime import datetime
 import os
+import socket
+import subprocess
+import time
 
 import beam_integrals as bi
 from beam_integrals.beam_types import BaseBeamType
@@ -12,6 +15,33 @@ import tables as tb
 import export_beam_integrals as ebi
 from ..app import app
 from .worker import compute_integral, combine_computed_integrals_into_a_table
+
+
+## Monitoring tasks
+
+@app.task
+def monitor_queues(ignore_result=True):
+    server_name = app.conf.MONITORING_SERVER_NAME
+    server_port = app.conf.MONITORING_SERVER_PORT
+    metric_prefix = app.conf.MONITORING_METRIC_PREFIX
+
+    queues_to_monitor = ('server', 'worker')
+    
+    output = subprocess.check_output('rabbitmqctl -q list_queues name messages consumers', shell=True)
+    lines = (line.split() for line in output.splitlines())
+    data = ((queue, int(tasks), int(consumers)) for queue, tasks, consumers in lines if queue in queues_to_monitor)
+
+    timestamp = int(time.time())
+    metrics = []
+    for queue, tasks, consumers in data:
+        metric_base_name = "%s.queue.%s." % (metric_prefix, queue)
+
+        metrics.append("%s %d %d\n" % (metric_base_name + 'tasks', tasks, timestamp))
+        metrics.append("%s %d %d\n" % (metric_base_name + 'consumers', consumers, timestamp))
+
+    sock = socket.create_connection((server_name, server_port), timeout=10)
+    sock.sendall(''.join(metrics))
+    sock.close()
 
 
 ## Recording the experiment status
