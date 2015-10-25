@@ -16,6 +16,13 @@ BEAM_INTEGRALS_DECIMAL_PRECISION = int(os.getenv('BEAM_INTEGRALS_DECIMAL_PRECISI
 BEAM_INTEGRALS_NORMALIZE_INTEGRALS_SMALLER_THAN = float(os.getenv('BEAM_INTEGRALS_NORMALIZE_INTEGRALS_SMALLER_THAN', 1e-9))
 
 if AM_I_SERVER:
+    MONITORING_IS_ACTIVE = bool(int(os.getenv('MONITORING_IS_ACTIVE', '0')))
+    if MONITORING_IS_ACTIVE:
+        MONITORING_SERVER_NAME = os.getenv('MONITORING_SERVER_NAME', 'localhost')
+        MONITORING_SERVER_PORT = int(os.getenv('MONITORING_SERVER_PORT', 2003))
+        MONITORING_INTERVAL = int(os.getenv('MONITORING_INTERVAL', 30))
+        MONITORING_METRIC_PREFIX = os.getenv('MONITORING_METRIC_PREFIX', 'experiments.export_beam_integrals')
+
     HDF5_COMPLIB = os.getenv('HDF5_COMPLIB', 'zlib')
     HDF5_COMPLEVEL = int(os.getenv('HDF5_COMPLEVEL', 1))
 
@@ -94,6 +101,7 @@ CELERY_TRACK_STARTED = True
 #   * http://celery.readthedocs.org/en/latest/faq.html#faq-acks-late-vs-retry
 CELERY_ACKS_LATE = True
 
+
 ## Worker settings
 
 if AM_I_SERVER:
@@ -103,3 +111,14 @@ else:
 
 # HACK: Prevents weird SymPy related memory leaks
 CELERYD_MAX_TASKS_PER_CHILD = 10
+
+
+## Periodic Task Server (celery beat)
+
+if AM_I_SERVER and MONITORING_IS_ACTIVE:
+    CELERYBEAT_SCHEDULE = {
+        'monitor-queues': {
+            'task': 'export_beam_integrals.tasks.server.monitor_queues',
+            'schedule': MONITORING_INTERVAL,
+        },
+    }
