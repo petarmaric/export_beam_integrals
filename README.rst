@@ -36,9 +36,9 @@ repository to get started.
 Quick start (distributed system in a box)
 =========================================
 
-Make any changes you'd like to `Vagrantfile` and `docker-compose.yml`,
+Make any changes you'd like to ``Vagrantfile`` and ``docker-compose.yml``,
 and please note that environment variables are used to configure the distributed
-system. See `Dockerfile.server` and `Dockerfile.worker` for more details.
+system. See ``Dockerfile.server`` and ``Dockerfile.worker`` for more details.
 
 Run the following command will automatically provision a new virtual machine;
 which will then build, configure and start the entire distributed system::
@@ -51,7 +51,7 @@ Production use
 
 export_beam_integrals has been thoroughly tested and is production ready, either
 by using standard Docker tools or specialized automated clustering systems. See
-`Dockerfile.server` and `Dockerfile.worker` for more details.
+``Dockerfile.server`` and ``Dockerfile.worker`` for more details.
 
 
 Contribute
