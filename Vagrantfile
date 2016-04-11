@@ -5,6 +5,10 @@ unless Vagrant.has_plugin?("vagrant-docker-compose")
   abort "docker_compose plugin is missing, please run 'vagrant plugin install vagrant-docker-compose'"
 end
 
+unless Vagrant.has_plugin?("vagrant-vbguest")
+  abort "vbguest plugin is missing, please run 'vagrant plugin install vagrant-vbguest'"
+end
+
 Vagrant.configure(2) do |config|
   config.vm.box = "ubuntu/trusty64"
 
