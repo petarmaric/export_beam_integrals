@@ -25,8 +25,7 @@ Vagrant.configure(2) do |config|
   end
 
   # Provision Docker
-  config.vm.provision :docker,
-    version: "1.7.0"
+  config.vm.provision :docker
   
   # Provision Docker Compose and then run the app containers
   config.vm.provision :docker_compose,
