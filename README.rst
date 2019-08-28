@@ -23,7 +23,7 @@ References
    composites in the scope of sustainable construction development in Serbia:
    investigation and environmental assessment of possible applications"
 
-.. _`beam_integrals project`: https://bitbucket.org/petar/beam_integrals
+.. _`beam_integrals project`: https://github.com/petarmaric/beam_integrals
 
 
 Installation
@@ -57,11 +57,11 @@ by using standard Docker tools or specialized automated clustering systems. See
 Contribute
 ==========
 
-If you find any bugs, or wish to propose new features `please let us know`_. 
+If you find any bugs, or wish to propose new features `please let us know`_.
 
 If you'd like to contribute, simply fork `the repository`_, commit your changes
 and send a pull request. Make sure you add yourself to `AUTHORS`_.
 
-.. _`please let us know`: https://bitbucket.org/petar/export_beam_integrals/issues/new
-.. _`the repository`: http://bitbucket.org/petar/export_beam_integrals
-.. _`AUTHORS`: https://bitbucket.org/petar/export_beam_integrals/src/default/AUTHORS
+.. _`please let us know`: https://github.com/petarmaric/export_beam_integrals/issues/new
+.. _`the repository`: https://github.com/petarmaric/export_beam_integrals
+.. _`AUTHORS`: https://github.com/petarmaric/export_beam_integrals/blob/master/AUTHORS
